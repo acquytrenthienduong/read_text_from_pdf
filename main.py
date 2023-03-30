@@ -8,17 +8,20 @@ worksheet = workbook.add_worksheet()
 
 number = 0
 number1 = 0
+number2 = 0
 
 for file in glob.glob("data/*.pdf"):
-    print(file)
+    print(file.split())
     reader = PdfReader(file)
     for x in range(len(reader.pages)):
         page = reader.pages[x]
         text = page.extract_text()
-        print(text)
+        # print(text)
         array = text.split()
         for i in array:
             raw = re.sub('[^A-Za-z0-9]+', "", i)
+
+
             # print(raw)
             if('@' in i):
                 value = i.replace("", "")
@@ -30,7 +33,11 @@ for file in glob.glob("data/*.pdf"):
                 # print(phoneNumber)
                 if(len(raw) <= 8): value = "+84" + raw
                 worksheet.write(number1 , 1 , phoneNumber)
+
+            worksheet.write(number2 , 2 , file.removeprefix('data/03.2023_'))
+
     print("=====================>")
     number += 1
     number1 += 1
+    number2 += 1
 workbook.close()
